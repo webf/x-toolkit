@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+<script type="text/javascript">
+(function() {
+    xtag.register('webf', {
+        lifecycle: {
+            created: function() {},
+            inserted: function(){
+                // fired each time a component
+                // is inserted into the DOM
+                this._features(2);
+            },
+            removed: function(){
+                // fired each time an element
+                // is removed from DOM
+                this._features(3);
+            },
+            attributeChanged: function(){
+                // fired when attributes are set
+                this._features(4);
+            }
+        },
+        events:{ },
+        accessors: {
+            _data: {
+                get: function(){
+                    if (!this.__data) this.__data={};
+                    return this.__data;
+                }
+            },
+
+            isWEBF : {
+                get: function(){ return 1; }
+            },
+            _webfImpl$: {
+                get: function(){
+                    return $(this._webfImpl);
+                }
+            },
+            _webfImpl: {
+                get: function(){
+                    if (!this._data.webfImpl){
+                        this._data.webfImpl=$(this).children(".webf_resetter")[0];
+                        /*if (!this.__webfImpl){
+                         for (var i = 0; i < this.children.length; i++) {
+                         var obj = this.children[i];
+                         if (Object.prototype.toString.call( obj )!=="[object HTMLUnknownElement]"){
+                         this._data.webfImpl=obj; break;
+                         }
+                         }
+
+                         };*/
+                    }
+
+                    return this._data.webfImpl;
+                }
+            },
+            _components: {
+                get: function(){
+                    if (!this._data.cps) this._data.cps=[];
+                    return this._data.cps;
+                },
+                set: function(v){ this._data.cps=v; }
+            },
+            _items: {
+                get: function(){
+                    if (!this._data.items) this._data.items=[];
+                    return this._data.items;
+                }
+                ,
+                set: function(v){ this._data.items=v; }
+            },
+            _htmlContent: {
+                get: function(){
+                    if (!this._data.htmlContent) this._data.htmlContent=[];
+                    return this._data.htmlContent;
+                }
+                ,
+                set: function(v){ this._data.htmlContent=v; }
+            }
+
+        },
+        methods: {
+            addClass: function(node, className){
+                $(node).addClass(className);
+            },
+            removeClass: function(node, className){
+                $(node).removeClass(className);
+            },
+            query: function(node, selector){ return xtag.query(node,selector); },
+
+            _addClass: function(node, className){ xtag.addClass(node,className); },
+            _removeClass: function(node, className){ xtag.removeClass(node,className); },
+            _query: function(node, selector){ return xtag.query(node,selector); },
+
+            _add_feature: function(name,trg){
+                for (var key in trg) {
+                    var f=trg.methods[key];
+                    var dontOverride=key.charAt(0)=='_' && key.charAt(1)=='_';
+                    if (dontOverride){
+                        key=key.substring(1);
+                        f._dont_override_=1;
+                    }
+
+                    this[key]=webf_extendFunction(this[key], f, name, dontOverride);
+                }
+            },
+            _add_feature_before: function(name,trg,before){
+                for (var key in trg) {
+                    var f=trg.methods[key];
+                    var dontOverride=key.charAt(0)=='_' && key.charAt(1)=='_';
+                    if (dontOverride){
+                        key=key.substring(1);
+                        f._dont_override_=1;
+                    }
+
+                    this[key]=webf_extendFunction(this[key], f, name, dontOverride,before);
+                }
+            },
+            _add_feature_after: function(name,trg,after){
+                for (var key in trg) {
+                    var f=trg.methods[key];
+                    var dontOverride=key.charAt(0)=='_' && key.charAt(1)=='_';
+                    if (dontOverride){
+                        key=key.substring(1);
+                        f._dont_override_=1;
+                    }
+                    this[key]=webf_extendFunction(this[key], f, name, dontOverride,null,before);
+                }
+            },
+
+            _chain_function: function(key, name, f, dontOverride){ this[key]=webf_extendFunction(this[key], f, name, dontOverride); },
+            _chain_function_before: function(key, name, f, dontOverride, before){
+                this[key]=webf_extendFunction(this[key], f, name, dontOverride, before);
+            },
+            _chain_function_after: function(key, name, f, dontOverride, after){
+                this[key]=webf_extendFunction(this[key], f, name, dontOverride, null, after);
+            },
+
+            _created: function(data) {
+                try {
+                    if (!this._data.htmlcontent) this._data.htmlcontent=[];
+                    for (var i = 0; i < this.children.length; i++) {
+                        var obj = this.children[i];
+                        if (Object.prototype.toString.call( obj )!=="[object HTMLUnknownElement]"){
+                            webf_push(this._data.htmlcontent,obj);
+                        }
+                    }
+
+                    var data=this._model(data);
+
+                    this._data.model=data;
+
+                    this._features(-1,data);
+
+                    var v=this.TAG(data);
+                    //if (this._features(0,data,v))
+                    if (v)
+                        v.append(this);
+
+                    this._features(1,data,v)
+                    //this._webfImpl=$(".webf_resetter",this);
+
+                    var att=this.getAttribute('istyle');
+                    if (att){
+                        var split = att.split(";");
+                        for (var i = 0; i < split.length; i++) {
+                            var obj = split[i];
+                            var split1 = obj.split(":");
+                            if (split1.length>1){
+                                var name=split1[0].toLowerCase().trim();
+                                split1.splice(0,1);
+                                $(this._webfImpl).css(name,split1.join(""));
+                            }
+                        }
+                    }
+
+
+                    return v;
+                } catch (e){
+                    webf_log(e);
+                }
+            },
+            _features: function(ix){},
+            _build: function(data){
+                var t={
+                    arr: [], context: { ix: 1, actions: [] },
+                    p: function(s){ this.arr.push(s); return this; },
+                    att: function(name,value){ return this.p(name).p('="').p(value).p('"'); },
+                    g: function(f){ f(); return this; },
+                    c: function(b,f){
+                        if (b){
+                            if (f && {}.toString.call(f) === '[object Function]')
+                                f(b);
+                            else
+                                this.p(f)
+
+                        }
+                        return this;
+                    },
+                    d: function(f){ return this; },
+                    e: function(list,f){
+                        if (!list) return this;
+                        if( Object.prototype.toString.call( list ) === '[object Array]' )
+                            for (var i = 0; i < list.length; i++) { f(list[i]); }
+                        else
+                            f(list);
+                        return this; },
+                    a: function(data){
+                        var att_id='_act_id_'+(this.context.ix++);
+                        this.att(att_id,att_id);
+                        this.context.actions[att_id]=data;
+                        return this;
+                    },
+                    append: function(node){ node.innerHTML=this.arr.join(''); this.end(node); },
+                    add: function(node){
+                        var div=node.ownerDocument.createElement("div");
+                        div.innerHTML=this.arr.join('');
+                        node.appendChild(div.firstElementChild);
+                        this.end(node);
+                    },
+                    end: function(root){
+                        for (var key in this.context.actions) {
+                            var v = this.context.actions[key];
+                            $("["+key+"]")[v.event](v.f);
+                        }
+                    }
+                };
+                return t;
+            },
+            _model: function(data){
+                var data = data ? data : {};
+                if (!data.content) data.content=[];
+
+                var self=this;
+                if (!self._htmlcontent) self._htmlcontent=[];
+
+                if (this.querySelector("[type='text/json']")){
+                    var d=JSON.parse(this.querySelector("[type='text/json']").textContent);
+                    for (var key in d) {
+                        data[key]=d[key];
+                    }
+                    //data =
+                } //else {
+                //data=[];
+
+                function attrs2JSON(node, atts, v){
+                    var v=v ? v : {};
+
+                    if (atts.length==0 &&
+                            node.childNodes.length==1 &&
+                            node.firstChild.nodeType===Node.TEXT_NODE)
+                        return node.textContent;
+
+                    //webf_log(atts)
+                    for (var i = 0; i < atts.length; i++) {
+                        var obj = atts[i];
+                        v[obj.nodeName]=obj.value;
+                    }
+                    return v;
+                }
+
+                attrs2JSON(this, this.attributes, data);
+
+                xtag.toArray(this.children).forEach(function(e){
+                    var name=e.nodeName.toLowerCase();
+                    try {
+                        self.removeChild(e);
+                        if (e.isWEBF) data.content.push(e);
+                        if (Object.prototype.toString.call( e )!=="[object HTMLUnknownElement]"){
+                            self._htmlcontent.push(e);
+                        } else {
+                            var isArray=Object.prototype.toString.call( data[name] ) === '[object Array]';
+                            var v=data[name];
+                            if (!isArray && v){ v=data[name]=[v]; isArray=1;}
+                            if (isArray)
+                                v.push(attrs2JSON(e, e.attributes));
+                            else {
+                                data[name]=attrs2JSON(e, e.attributes);
+                            }
+                        }
+
+                    } catch (e){
+                        webf_log(e);
+                    }
+
+                });
+                //}
+                //webf_log(data)
+                return data;
+            }
+        }
+    });
+
+    xtag.register('webf_window_manager', webf_features({
+        extends: "webf",
+        lifecycle: {
+            created: function() {
+                this._created();
+            }
+        },
+        events:{
+        },
+        accessors: {
+        },
+        methods: {
+            TAG:function(data, t){
+                var self=this;
+                var t=t ? t : this._build();
+
+                $(document).click(function(e){
+                    var target= e.target;
+                    // the target node is in a popup ? do nothing
+                    if(self._findParentWC("WEBF_POPUP",target)){
+                        return;
+                    } else {
+                        // close open menus
+                        $(".WEBF_MENU").each(function(ix,e){
+                            e._hide_popup(self);
+                        })
+                    };
+
+                    //webf_log(e);
+                });
+
+                return t;
+            },
+        }
+    },WEBF_FEATURE("WEBF_WINDOW_MANAGER")));
+
+    xtag.register('webf_i18n_manager', webf_features({
+        extends: "webf",
+        lifecycle: {
+            created: function() {
+                this._created();
+            }
+        },
+        methods: {
+            _getKeys: function(lang){
+                if (!this._i18nLangs[lang]) return this._i18nLangs["_default"];
+                return this._i18nLangs[lang];
+            },
+            _addKeys: function(keys, lang){
+                if (!lang) lang="_default";
+                var l = this._i18nLangs[lang];
+                if (!l) l=this._i18nLangs[lang]={};
+
+                for (var key in keys) {
+                    l[key]=keys[key];
+                }
+            },
+            _addKey: function(key, value, lang){
+                if (!lang) lang="_default";
+                var l = this._i18nLangs[lang];
+                if (!l) l=this._i18nLangs[lang]={};
+
+                for (var key in keys) {
+                    l[key]=keys[key];
+                }
+            },
+
+            TAG:function(data, t){
+                var self=this;
+                var t=t ? t : this._build();
+
+                this._i18nLangs={
+                    "_default": {}
+                }
+                //if (!document._i18nMngr){
+                document._i18nMngr=this;
+
+                var link = document.querySelectorAll('link[rel=import]');
+                for (var i = 0; i < link.length; i++) {
+                    var e = link[i];
+                    if (!e.content) continue;
+                    var content = e.content.querySelectorAll('template');
+                    for (var j = 0; j < content.length; j++) {
+                        var e1 = content[j];
+                        var id= e1.id;
+                        if (!e1.content) continue;
+                        var styles = e1.content.querySelectorAll('i18n');
+                        //var styles = e1._content.querySelectorAll('style');
+                        for (var k = 0; k < styles.length; k++) {
+                            var e2 = styles[k];
+                            var id= e2.id;
+                            var d=JSON.parse(e2.textContent);
+                            this._addKeys(d,e2.getAttribute("lang"));
+                        }
+                    }
+                }
+
+                //}
+
+
+                return t;
+            },
+        }
+    },WEBF_FEATURE("WEBF_I18N_MANAGER")));
+    xtag.register('webf_action', webf_features({
+        lifecycle: {
+            created: function() {
+                var text=this.textContent;
+                var code=this.querySelectorAll("script[type='text/action']");
+                if (code.length>0){
+                    text="";
+                    for (var i = 0; i < code.length; i++) {
+                        text+=code[i].textContent+"\n";
+                    }
+                }
+                //webf_log(text)
+                var f = new Function("e", text);
+                var actionF= this._hasAscendantFeature("WEBF_ACTION");
+                actionF.action=f;
+
+            }
+        }
+
+    },WEBF_FEATURE("WEBF-ACTION"),WEBF_CORE));
+
+})();
+</script>
+</body>
+
+</html>

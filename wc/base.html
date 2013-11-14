@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+</head>
+
+<body>
+<template id="templateId">
+</template>
+<script type="text/javascript">
+    (function() {
+        xtag.register('templateId', webf_features({
+            extends: "webf",
+            lifecycle: {
+                created: function() {
+                    this._created();
+                }
+            },
+            events:{
+            },
+            accessors: {
+            },
+            methods: {
+                TAG:function(data, t){
+                    var self=this;
+                    var t=t ? t : this._build();
+
+                    return t;
+                },
+            }
+        }, WEBF_TRAVERSABLE));
+    })();
+
+</script>
+</body>
+
+</html>

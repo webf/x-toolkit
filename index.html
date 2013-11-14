@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Web Components with Web Fragments</title>
+
+  <script type="text/javascript" src="wc/x-tag-components.js"></script>
+  <script type="text/javascript" src="wc/webf.js"></script>
+  <script type="text/javascript" src="wc/jquery-1.8.3.js?ver=1.8.3"></script>
+
+    <link rel="import" href="wc/breadcrumbs.html">
+    <link rel="import" href="wc/search.html">
+    <link rel="import" href="wc/gbutton.html">
+    <link rel="import" href="wc/gbutton-dropdown.html">
+    <link rel="import" href="wc/gpopup.html">
+    <link rel="import" href="wc/input.html">
+    <link rel="import" href="wc/dialog.html">
+    <link rel="import" href="wc/tooltip.html">
+    <link rel="import" href="wc/accordion.html">
+</head>
+
+<body>
+
+<h1>A Web Components UI Library</h1>
+
+This is a simple web component library, which uses Web Fragments to generate html code.
+
+For more infos visit: <a href="http://www.portablehtml.com/2013/11/a-web-components-widget-library.html">http://www.portablehtml.com/2013/11/a-web-components-widget-library.html</a>
+<br/>
+For the documentation visit: <a href="http://www.portablehtml.com/2013/11/web-components.html">http://www.portablehtml.com/2013/11/web-components.html</a>
+
+Components are
+
+
+<h2>Buttons</h2>
+
+<g-button text="button"></g-button>
+<g-checkbox-1 text="check box"></g-checkbox-1>
+
+<g-checkbox text="check box"></g-checkbox>
+<g-checkbox text="selected check box" status="true"></g-checkbox>
+
+<g-status text="status"></g-status>
+<g-radio text="radio "></g-radio>
+
+Grouped Radios [
+<g-status-group>
+    <g-radio text="value1"></g-radio>
+    <g-radio text="value2"></g-radio>
+</g-status-group> ] Grouped Checkboxs [
+<g-status-group>
+    <g-checkbox-1 text="Test1"></g-checkbox-1>
+    <g-checkbox-1 text="Test2"></g-checkbox-1>
+</g-status-group> ]
+
+
+<br>
+<gbutton-dropdown value="ciao">
+    <g-popup>
+        <g-popup-item text="ciao" value="a"></g-popup-item>
+        <g-popup-item text="hello" value="a"></g-popup-item>
+        <g-popup-item text="dasvidania" value="b"></g-popup-item>
+    </g-popup>
+</gbutton-dropdown>
+
+Multiple selections:
+<gbutton-dropdown value="choose many">
+    <g-popup direction="horizontal" selection="multiple">
+        <g-popup-item text="a" value="a"></g-popup-item>
+        <g-popup-item text="ciao" value="a"></g-popup-item>
+        <g-popup-item text="hello" value="a"></g-popup-item>
+        <g-popup-item text="dasvidania" value="b"></g-popup-item>
+    </g-popup>
+</gbutton-dropdown>
+
+<br>
+
+A Menu bar <g-menu-bar istyle="width:100%"><g-popup-item text="a" value="a"></g-popup-item>
+    <g-popup-item text="A" value="a">
+        <g-popup>
+            <g-popup-item text="already" value="already"></g-popup-item>
+            <g-popup-item text="abstract" value="abstract"></g-popup-item>
+        </g-popup>
+
+    </g-popup-item>
+    <g-popup-item text="B" value="b"></g-popup-item>
+    <g-popup-item text="C" value="c"></g-popup-item>
+    <g-popup-item text="D" value="d"></g-popup-item></g-menu-bar>
+
+A List:
+<g-list selection="multiple">
+    <g-popup-item text="ciao" value="a"></g-popup-item>
+    <g-popup-item text="hello" value="a"></g-popup-item>
+    <g-popup-item text="dasvidania" value="b"></g-popup-item>
+</g-list>
+
+<g-button-icon text="1"></g-button-icon>
+
+Button icon with menu:
+<g-button-icon text="1"> <g-popup selection="multiple">
+    <g-popup-item text="a" value="a"></g-popup-item>
+    <g-popup-item text="ciao" value="a"></g-popup-item>
+    <g-popup-item text="hello" value="a"></g-popup-item>
+    <g-popup-item text="gula gula" value="a"></g-popup-item>
+    <g-popup-item text="dasvidania" value="b"></g-popup-item>
+</g-popup>
+</g-button-icon>
+
+Other kind of button
+<g-button-1 text="1"></g-button-1>
+link an action to this button: <g-button-1 text="button with action">
+    <webf_action>
+        alert("Hello");
+    </webf_action>
+</g-button-1>
+
+<h2>Input</h2>
+
+An input box <g-input text="1"><g-tooltip id="dialog" title="popup on an input box" subtitle="subtitle"></g-tooltip></g-input>
+this is a search box <search-box ></search-box>
+<br>and also this
+<search-box placeholder="search here"><g-tooltip id="dialog" title="popup on an input box" subtitle="subtitle"></g-tooltip>
+</search-box>
+
+<br/> This has a popup on click <g-input text="1">
+<g-popup>
+<g-popup-item text="item3">
+    <g-popup>
+        <g-popup-item text="sub item3"></g-popup-item>
+    </g-popup>
+</g-popup-item>
+</g-popup>
+</g-input>
+
+
+<br> This has a dialog <g-input text="1">
+    <g-dialog-2 anchor="t=window top=middle left=center" title="Dialog" subtitle="subtitle">
+        <script type="text/json">{
+            "panel": {},
+            "header": {
+            "search":{}
+            }
+            }</script>
+        <g-button><text>Popup</text>
+            <g-popup>
+                </item>
+                <g-popup-item text="item1">
+
+                </g-popup-item>
+                <g-popup-item text="item3">
+                    <g-popup>
+                        <g-popup-item text="item3">
+                            <g-popup>
+                                <g-popup-item text="item3"></g-popup-item>
+                            </g-popup>
+                        </g-popup-item>
+
+                        <g-popup-item>
+                            <g-checkbox text="Test3" status="true"></g-checkbox>
+                        </g-popup-item>
+
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                        <g-popup-item>
+                            <g-button text="status"></g-button>
+                            <g-button text="status1"></g-button>
+                        </g-popup-item>
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                    </g-popup>
+                </g-popup-item>
+
+                <g-popup-item>
+                    <g-checkbox text="Test3" status="true"></g-checkbox>
+                </g-popup-item>
+
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item>
+                    <g-button><text>Popup</text>
+                        <g-popup>
+                            <item text="item1"></item>
+                            <item text="item2"></item>
+                            <g-popup-item text="item3"></g-popup-item>
+
+                            <g-popup-item>
+                                <g-checkbox text="Test3" status="true"></g-checkbox>
+                            </g-popup-item>
+
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                            <g-popup-item>
+                                <g-button text="status"></g-button>
+                                <g-button text="status1"></g-button>
+                            </g-popup-item>
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                        </g-popup>
+                    </g-button>
+                </g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+            </g-popup>
+        </g-button>
+    </g-dialog-2>
+</g-input>
+
+<br> This has a dialog but in italian <g-input text="1">
+    <g-dialog-2 lang="it" anchor="t=window top=middle left=center" title="Dialog" subtitle="subtitle">
+        <script type="text/json">{
+            "panel": {},
+            "header": {
+            "search":{}
+            }
+            }</script>
+        <g-button><text>Popup</text>
+            <g-popup>
+                </item>
+                <g-popup-item text="item1">
+
+                </g-popup-item>
+                <g-popup-item text="item3">
+                    <g-popup>
+                        <g-popup-item text="item3">
+                            <g-popup>
+                                <g-popup-item text="item3"></g-popup-item>
+                            </g-popup>
+                        </g-popup-item>
+
+                        <g-popup-item>
+                            <g-checkbox text="Test3" status="true"></g-checkbox>
+                        </g-popup-item>
+
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                        <g-popup-item>
+                            <g-button text="status"></g-button>
+                            <g-button text="status1"></g-button>
+                        </g-popup-item>
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                    </g-popup>
+                </g-popup-item>
+
+                <g-popup-item>
+                    <g-checkbox text="Test3" status="true"></g-checkbox>
+                </g-popup-item>
+
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item>
+                    <g-button><text>Popup</text>
+                        <g-popup>
+                            <item text="item1"></item>
+                            <item text="item2"></item>
+                            <g-popup-item text="item3"></g-popup-item>
+
+                            <g-popup-item>
+                                <g-checkbox text="Test3" status="true"></g-checkbox>
+                            </g-popup-item>
+
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                            <g-popup-item>
+                                <g-button text="status"></g-button>
+                                <g-button text="status1"></g-button>
+                            </g-popup-item>
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                        </g-popup>
+                    </g-button>
+                </g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+            </g-popup>
+        </g-button>
+        <g-list selection="multiple">
+            <g-popup-item text="a" value="a"></g-popup-item>
+            <g-popup-item>
+                <g-button><text>Popup</text>
+                    <g-popup>
+                        <g-popup-item text="item3"></g-popup-item>
+                        <g-popup-item>
+                            <g-checkbox text="Test3" status="true"></g-checkbox>
+                        </g-popup-item>
+                    </g-popup>
+                </g-button>
+             </g-popup-item>
+
+            <g-popup-item><g-radio text="Radio"></g-radio></g-popup-item>
+            <g-popup-item text="Radio" value="a"></g-popup-item>
+
+            <g-popup-item text="hello" value="a"></g-popup-item>
+            <g-popup-item text="gula gula" value="a"></g-popup-item>
+            <g-popup-item text="dasvidania" value="b"></g-popup-item>
+        </g-list>
+
+    </g-dialog-2>
+</g-input>
+
+<h2>Popup</h2>
+
+<g-button><text>Popup</text>
+    <g-popup>
+        </item>
+        <g-popup-item text="item1">
+
+        </g-popup-item>
+        <g-popup-item text="item3">
+            <g-popup>
+                <g-popup-item text="item3">
+                    <g-popup>
+                        <g-popup-item text="item3"></g-popup-item>
+                    </g-popup>
+                </g-popup-item>
+
+                <g-popup-item>
+                    <g-checkbox text="Test3" status="true"></g-checkbox>
+                </g-popup-item>
+
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item>
+                    <g-button text="status"></g-button>
+                    <g-button text="status1"></g-button>
+                </g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+            </g-popup>
+        </g-popup-item>
+
+        <g-popup-item>
+            <g-checkbox text="Test3" status="true"></g-checkbox>
+        </g-popup-item>
+
+        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+        <g-popup-item>
+            <g-button><text>Popup</text>
+                <g-popup>
+                    <item text="item1"></item>
+                    <item text="item2"></item>
+                    <g-popup-item text="item3"></g-popup-item>
+
+                    <g-popup-item>
+                        <g-checkbox text="Test3" status="true"></g-checkbox>
+                    </g-popup-item>
+
+                    <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                    <g-popup-item>
+                        <g-button text="status"></g-button>
+                        <g-button text="status1"></g-button>
+                    </g-popup-item>
+                    <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                    <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                </g-popup>
+            </g-button>
+        </g-popup-item>
+        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+    </g-popup>
+</g-button>
+
+<h2>Menu items</h2>
+This are menu items outside a menu
+<g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+<g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+
+
+<!---->
+<h2>Windows & Dialogs</h2>
+
+<g-button text="dialog">
+    <g-tooltip id="dialog" title="Dialog" subtitle="subtitle"></g-tooltip>
+    <g-dialog anchor="t=window top=middle left=center" modal="true" title="Dialog" subtitle="subtitle"><g-radio text="status"></g-radio></g-dialog>
+</g-button>
+
+<g-button text="dialog 2">
+    <g-tooltip id="dialog" title="Dialog-1" subtitle="subtitle"></g-tooltip>
+    <g-dialog-2 anchor="t=window top=middle left=center" modal="true" title="Dialog" subtitle="subtitle">
+        <script type="text/json">{
+        "panel": {},
+        "header": {
+            "search":{}
+            }
+        }</script>
+        <g-button><text>Popup</text>
+            <g-popup>
+                </item>
+                <g-popup-item text="item1">
+
+                </g-popup-item>
+                <g-popup-item text="item3">
+                    <g-popup>
+                        <g-popup-item text="item3">
+                            <g-popup>
+                                <g-popup-item text="item3"></g-popup-item>
+                            </g-popup>
+                        </g-popup-item>
+
+                        <g-popup-item>
+                            <g-checkbox text="Test3" status="true"></g-checkbox>
+                        </g-popup-item>
+
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                        <g-popup-item>
+                            <g-button text="status"></g-button>
+                            <g-button text="status1"></g-button>
+                        </g-popup-item>
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                    </g-popup>
+                </g-popup-item>
+
+                <g-popup-item>
+                    <g-checkbox text="Test3" status="true"></g-checkbox>
+                </g-popup-item>
+
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item>
+                    <g-button><text>Popup</text>
+                        <g-popup>
+                            <item text="item1"></item>
+                            <item text="item2"></item>
+                            <g-popup-item text="item3"></g-popup-item>
+
+                            <g-popup-item>
+                                <g-checkbox text="Test3" status="true"></g-checkbox>
+                            </g-popup-item>
+
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                            <g-popup-item>
+                                <g-button text="status"></g-button>
+                                <g-button text="status1"></g-button>
+                            </g-popup-item>
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                        </g-popup>
+                    </g-button>
+                </g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+            </g-popup>
+        </g-button>
+    </g-dialog-2>
+</g-button>
+
+<g-button text="dialog and menu">
+    <g-tooltip id="dialog" title="It has a menu bar" subtitle="subtitle"></g-tooltip>
+    <g-dialog-3 anchor="t=window top=middle left=center" title="It has a menu bar" subtitle="subtitle">
+        <g-menu-bar istyle="width:100%"><g-popup-item text="a" value="a"></g-popup-item>
+            <g-popup-item text="ciao" value="a">
+                <g-popup>
+                    <g-popup-item text="already" value="already"></g-popup-item>
+                    <g-popup-item text="abstract" value="abstract"></g-popup-item>
+                </g-popup>
+
+            </g-popup-item>
+            <g-popup-item text="hello" value="a"></g-popup-item>
+            <g-popup-item text="gula gula" value="a"></g-popup-item>
+            <g-popup-item text="dasvidania" value="b"></g-popup-item></g-menu-bar>
+        <g-button><text>Popup</text>
+        </g-button>
+    </g-dialog-3>
+</g-button>
+
+
+<g-button text="dialog 3">
+    <g-tooltip id="dialog" title="Dialog-1" subtitle="subtitle"></g-tooltip>
+    <g-dialog-3 anchor="t=window top=middle left=center" modal="true" title="Dialog" subtitle="subtitle">
+        <g-button><text>Popup</text>
+            <g-popup>
+                </item>
+                <g-popup-item text="item1">
+
+                </g-popup-item>
+                <g-popup-item text="item3">
+                    <g-popup>
+                        <g-popup-item text="item3">
+                            <g-popup>
+                                <g-popup-item text="item3"></g-popup-item>
+                            </g-popup>
+                        </g-popup-item>
+
+                        <g-popup-item>
+                            <g-checkbox text="Test3" status="true"></g-checkbox>
+                        </g-popup-item>
+
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                        <g-popup-item>
+                            <g-button text="status"></g-button>
+                            <g-button text="status1"></g-button>
+                        </g-popup-item>
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                        <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                    </g-popup>
+                </g-popup-item>
+
+                <g-popup-item>
+                    <g-checkbox text="Test3" status="true"></g-checkbox>
+                </g-popup-item>
+
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item>
+                    <g-button><text>Popup</text>
+                        <g-popup>
+                            <item text="item1"></item>
+                            <item text="item2"></item>
+                            <g-popup-item text="item3"></g-popup-item>
+
+                            <g-popup-item>
+                                <g-checkbox text="Test3" status="true"></g-checkbox>
+                            </g-popup-item>
+
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                            <g-popup-item>
+                                <g-button text="status"></g-button>
+                                <g-button text="status1"></g-button>
+                            </g-popup-item>
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                            <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+                        </g-popup>
+                    </g-button>
+                </g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+                <g-popup-item><g-radio text="status"></g-radio></g-popup-item>
+
+            </g-popup>
+        </g-button>
+    </g-dialog-3>
+</g-button>
+
+<g-button text="help">
+    <g-help text="This is a long text ..." subtitle="subtitle"></g-help>
+    <g-dialog title="Dialog" subtitle="subtitle">
+        <g-accordion>
+            <g-accordion-item title="title1" selected="true">
+                <item title="test1"></item>
+
+            </g-accordion-item>
+            <g-accordion-item title="title2">
+                <item title="test1"></item>
+                <item title="test2"></item>
+            </g-accordion-item>
+        </g-accordion>
+
+    </g-dialog>
+</g-button>
+
+
+<!---->
+<h2>Breadcrumbs</h2>
+
+<webf_Breadcrumbs></webf_Breadcrumbs>
+<webf_Breadcrumbs>
+    <item title="Guide"></item>
+</webf_Breadcrumbs>
+<webf_Breadcrumbs>
+    <item title="Guide"></item>
+    <item title="Test1"></item>
+    <item title="Test2"></item>
+</webf_Breadcrumbs>
+<webf_Breadcrumbs>
+    <script type="text/json">{
+        "item": [{"title":"Guide"},{"title":"Test1"},{"title":"Test2"}]
+    }</script>
+</webf_Breadcrumbs>
+
+<h2>Accordion</h2>
+
+<g-accordion>
+    <g-accordion-item title="title1" selected="true">
+        <item title="test1"></item>
+    </g-accordion-item>
+    <g-accordion-item title="title2">
+        <item title="test1"></item>
+        <item title="test2"></item>
+    </g-accordion-item>
+</g-accordion>
+
+
+<g-accordion-1>
+    <g-accordion-item-1 title="title1" selected="true">
+        <h2>ciao</h2>
+    </g-accordion-item-1>
+    <g-accordion-item-1 title="title2">
+        <g-accordion-1>
+            <g-accordion-item-1 title="title1" selected="true">
+                <h2>ciao</h2>
+            </g-accordion-item-1>
+            <g-accordion-item-1 title="title2"></g-accordion-item-1>
+        </g-accordion-1>
+
+
+    </g-accordion-item-1>
+</g-accordion-1>
+
+<g-accordion-1>
+    <g-accordion-item-1 title="title1" selected="true">
+        <h2>ciao</h2>
+    </g-accordion-item-1>
+    <g-accordion-item-1 title="title2"></g-accordion-item-1>
+</g-accordion-1>
+
+
+<g-combo text="aaa">
+    <g-popup-item label="Status1"><g-radio text="status1"></g-radio></g-popup-item>
+    <g-popup-item label="Status2"><g-radio text="status2"></g-radio></g-popup-item>
+
+</g-combo>
+
+<script type="text/javascript">{
+    window.addEventListener('WebComponentsReady', function() {
+        document.querySelectorAll("g-popup-item").forEach(function(e){
+        })
+    });
+    }</script>
+
+
+</body>
+
+</html>
